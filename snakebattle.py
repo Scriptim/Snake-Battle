@@ -131,6 +131,7 @@ while not game_over:
     p2.y += p2.direction[1]
 
     ## update
+    CLOCK.tick(TPS)
     pygame.display.update()
     
 pygame.time.wait(4000)
