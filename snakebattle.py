@@ -129,6 +129,24 @@ while not game_over:
     p1.y += p1.direction[1]
     p2.x += p2.direction[0]
     p2.y += p2.direction[1]
+    
+    ## draw tail
+    for i in p1.tail:
+        pygame.draw.rect(DISPLAY_SURFACE, COLOR_P1, get_dimension(i[0], i[1], 1, 1))
+    for i in p2.tail:
+        pygame.draw.rect(DISPLAY_SURFACE, COLOR_P2, get_dimension(i[0], i[1], 1, 1))
+
+    ## move tail
+    for i in range(p1.length - 1, -1, -1):
+        if i == 0:
+            p1.tail[i] = (p1.x, p1.y)
+        else:
+            p1.tail[i] = (p1.tail[i - 1][0], p1.tail[i - 1][1])
+    for i in range(p2.length - 1, -1, -1):
+        if i == 0:
+            p2.tail[i] = (p2.x, p2.y)
+        else:
+            p2.tail[i] = (p2.tail[i - 1][0], p2.tail[i - 1][1])
 
     ## score
     p1_length_label = FONT_SC.render(str(p1.length), 1, COLOR_P1)
