@@ -1,5 +1,8 @@
-import pygame, sys, random
+import pygame, sys, os, random
 from pygame.locals import *
+
+## center window
+os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 ## window dimensions
 TILE_SIZE = 12
