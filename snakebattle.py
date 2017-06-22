@@ -130,6 +130,14 @@ while not game_over:
     p2.x += p2.direction[0]
     p2.y += p2.direction[1]
 
+    ## score
+    p1_length_label = FONT_SC.render(str(p1.length), 1, COLOR_P1)
+    sep_length_label = FONT_SC.render(":", 1, COLOR_FG)
+    p2_length_label = FONT_SC.render(str(p2.length), 1, COLOR_P2)
+    DISPLAY_SURFACE.blit(p1_length_label, (DISPLAY_SURFACE.get_width() / 2 - p1_length_label.get_rect().width - TILE_SIZE, 20))
+    DISPLAY_SURFACE.blit(sep_length_label, (DISPLAY_SURFACE.get_width() / 2, 20))
+    DISPLAY_SURFACE.blit(p2_length_label, (DISPLAY_SURFACE.get_width() / 2 + sep_length_label.get_rect().width + TILE_SIZE, 20))
+
     ## debugging
     if DEBUG:
         DISPLAY_SURFACE.blit(FONT_DB.render("Player 1", 1, COLOR_DB), (10, DISPLAY_SURFACE.get_height() - 80))
