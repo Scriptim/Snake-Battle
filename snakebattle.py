@@ -130,6 +130,19 @@ while not game_over:
     p2.x += p2.direction[0]
     p2.y += p2.direction[1]
 
+    ## debugging
+    if DEBUG:
+        DISPLAY_SURFACE.blit(FONT_DB.render("Player 1", 1, COLOR_DB), (10, DISPLAY_SURFACE.get_height() - 80))
+        DISPLAY_SURFACE.blit(FONT_DB.render("Dir: " + str(p1.direction), 1, COLOR_DB), (10, DISPLAY_SURFACE.get_height() - 60))
+        DISPLAY_SURFACE.blit(FONT_DB.render("Length: " + str(p1.length), 1, COLOR_DB), (10, DISPLAY_SURFACE.get_height() - 40))
+
+        DISPLAY_SURFACE.blit(FONT_DB.render("Player 2", 1, COLOR_DB), (180, DISPLAY_SURFACE.get_height() - 80))
+        DISPLAY_SURFACE.blit(FONT_DB.render("Dir: " + str(p2.direction), 1, COLOR_DB), (180, DISPLAY_SURFACE.get_height() - 60))
+        DISPLAY_SURFACE.blit(FONT_DB.render("Length: " + str(p2.length), 1, COLOR_DB), (180, DISPLAY_SURFACE.get_height() - 40))
+
+        DISPLAY_SURFACE.blit(FONT_DB.render("MS: " + str(pygame.time.get_ticks()), 1, COLOR_DB), (340, DISPLAY_SURFACE.get_height() - 80))
+        DISPLAY_SURFACE.blit(FONT_DB.render("FPS: " + str(round(CLOCK.get_fps(), 2)), 1, COLOR_DB), (340, DISPLAY_SURFACE.get_height() - 60))
+
     ## update
     CLOCK.tick(TPS)
     pygame.display.update()
