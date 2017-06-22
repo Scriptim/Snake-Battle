@@ -66,7 +66,7 @@ DISPLAY_SURFACE.fill(COLOR_BG)
 
 ## fonts (change font files here)
 FONT_DB = pygame.font.Font(None, 20) # debug font
-FONT_SC = pygame.font.Font(None, 60) # score
+FONT_SC = pygame.font.Font(None, TILE_SIZE * 5) # score
 
 ## directions
 UP = (0, -1)
