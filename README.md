@@ -1,0 +1,57 @@
+# Snake Battle 
+
+Play **Snake** with two players
+
+**THIS GAME IS ALSO PLAYABLE ON A RASPBERRY PI USING GPIO INPUTS!**
+
+## Required Python Packages
+
+`pygame`
+`RPi` (only when using on Raspberry Pi)
+
+## Setup Font
+
+Before starting the game, go to line *68* and *69* and change *None* to the path of a font file
+
+If you don't do this, Pygame will choose a font
+
+I recommend using [VT323 by Peter Hull](https://fonts.google.com/specimen/VT323 "Google Fonts")
+
+**Example:**
+   
+    FONT_DB = pygame.font.Font("VT232.ttf", 20) # debug font
+    FONT_SC = pygame.font.Font("VT232.ttf", TILE_SIZE * 5) # score
+    
+## Start Game
+
+Open a Terminal and navigate to this folder, then run
+	
+	python2.7 snakebattle.py 
+	
+The game is tested with **Python v2.7**, feel free to use another compatible version
+
+## Arguments
+
+`$ python2.7 snakebattle.py --help`
+
+    usage: snakebattle.py [-h] [-r] [-s PX] [-t X Y] [-d] [-f TPS] [-b MS]
+    
+    optional arguments:
+      -h, --help            show this help message and exit
+      -r, --raspi           run snake battle on a raspberry pi
+      -s PX, --tilesize PX  the size of a tile
+      -t X Y, --tiles X Y   the number of tiles
+      -d, --debug           show debug information on the screen
+      -f TPS, --fps TPS     framerate in ticks per second
+      -b MS, --delay MS     button delay (raspi mode)
+      
+## Raspberry Pi Mode (`--raspi`)
+
+Connect buttons to the following GPIO pins (BCM numbering)
+
+- Player 1 Left: **25**
+- Player 1 Right: **24**
+- Player 2 Left: **23**
+- Player 2 Right: **18**
+
+Alternatively, you can use other pins and change the pin numbers on lines *23 - 26*
