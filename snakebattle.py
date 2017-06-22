@@ -93,6 +93,35 @@ while not game_over:
             print("## Quit ##")
             pygame.quit()
             sys.exit()
+        ## keyboard mode
+        elif event.type == KEYDOWN:
+            if event.key == K_a:
+                p1.left = True
+                p1.right = False
+                p1.turn()
+            elif event.key == K_d:
+                p1.right = True
+                p1.left = False
+                p1.turn()
+            elif event.key == K_LEFT:
+                p2.left = True
+                p2.right = False
+                p2.turn()
+            elif event.key == K_RIGHT:
+                p2.right = True
+                p2.left = False
+                p2.turn()
+
+    p1.left = False
+    p1.right = False
+    p2.left = False
+    p2.right = False
+
+    ## move head
+    p1.x += p1.direction[0]
+    p1.y += p1.direction[1]
+    p2.x += p2.direction[0]
+    p2.y += p2.direction[1]
 
     ## update
     pygame.display.update()
