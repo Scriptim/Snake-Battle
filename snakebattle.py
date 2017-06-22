@@ -1,12 +1,22 @@
-import pygame, sys, os, random
+import argparse, pygame, sys, os, random
 from pygame.locals import *
+
+## start arguments
+arg_parser = argparse.ArgumentParser()
+arg_parser.add_argument('-r', '--raspi', dest='raspi', action='store_true', help='run snake battle on a raspberry pi')
+arg_parser.add_argument('-s', '--tilesize', dest='tilesize', metavar='PX', help='the size of a tile', type=int, default=12)
+arg_parser.add_argument('-t', '--tiles', dest='tiles', nargs=2, metavar=('X', 'Y'), help='the number of tiles', type=int, default=[70, 50])
+arg_parser.add_argument('-d', '--debug', dest='debug', action='store_true', help='show debug information on the screen')
+arg_parser.add_argument('-f', '--fps', dest='fps', nargs=1, metavar='TPS', help='framerate in ticks per second', type=int, default=12)
+arg_parser.add_argument('-b', '--delay', dest='delay', metavar='MS', help='button delay (raspi mode)', type=int, default=100)
+args = arg_parser.parse_args()
+print(args)
 
 ## center window
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 ## raspberry mode setup
-RASPI = True
-if RASPI:
+if args.raspi:
     from RPi import GPIO
     print("## Raspberry Mode ##")
     GPIO.setmode(GPIO.BCM)
@@ -27,9 +37,9 @@ if RASPI:
 
 
 ## window dimensions
-TILE_SIZE = 12
-TILES_X = 70
-TILES_Y = 50
+TILE_SIZE = args.tilesize
+TILES_X = args.tiles[0]
+TILES_Y = args.tiles[1]
 
 ## colors
 COLOR_BG = (30, 30, 30) # background
@@ -40,8 +50,8 @@ COLOR_FD = (255, 200, 30) # food
 COLOR_DB = (50, 150, 250) # debug
 
 ## settings
-TPS = 12 # ticks lock
-DEBUG = True # debugging
+TPS = args.fps # ticks lock
+DEBUG = args.debug # debugging
 
 ## tiles to pixels
 def get_dimension(x, y, width = 0, height = 0):
@@ -141,7 +151,7 @@ while not game_over:
             pygame.quit()
             sys.exit()
         ## keyboard mode
-        elif event.type == KEYDOWN and not RASPI:
+        elif event.type == KEYDOWN and not args.raspi:
             if event.key == K_a:
                 p1.left = True
                 p1.right = False
@@ -160,7 +170,7 @@ while not game_over:
                 p2.turn()
                 
     ## raspberry mode
-    if RASPI:
+    if args.raspi:
         if not GPIO.input(P1_LEFT_PIN) and pygame.time.get_ticks() - p1_left_ms > BTN_DELAY:
             p1_left_ms = pygame.time.get_ticks()
             p1.left = True
@@ -290,7 +300,7 @@ while not game_over:
     CLOCK.tick(TPS)
     pygame.display.update()
     
-if RASPI:
+if args.raspi:
   GPIO.cleanup()
     
 pygame.time.wait(4000)
