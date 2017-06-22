@@ -4,6 +4,28 @@ from pygame.locals import *
 ## center window
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
+## raspberry mode setup
+RASPI = True
+if RASPI:
+    from RPi import GPIO
+    print("## Raspberry Mode ##")
+    GPIO.setmode(GPIO.BCM)
+    P1_LEFT_PIN = 25
+    P1_RIGHT_PIN = 24
+    P2_LEFT_PIN = 23
+    P2_RIGHT_PIN = 18
+    GPIO.setup(P1_LEFT_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(P1_RIGHT_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(P2_LEFT_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(P2_RIGHT_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    ## button delay
+    BTN_DELAY = args.delay
+    p1_left_ms = 0
+    p1_right_ms = 0
+    p2_left_ms = 0
+    p2_right_ms = 0
+
+
 ## window dimensions
 TILE_SIZE = 12
 TILES_X = 70
@@ -27,7 +49,7 @@ def get_dimension(x, y, width = 0, height = 0):
   
 ## init
 pygame.init()
-pygame.display.set_caption('Snake Battle by Scriptim')
+pygame.display.set_caption('Snake Battle by Scriptim' + (' (Raspberry Mode)' if args.raspi else ''))
 CLOCK = pygame.time.Clock()
 DISPLAY_SURFACE = pygame.display.set_mode((TILE_SIZE * TILES_X, TILE_SIZE * TILES_Y))
 DISPLAY_SURFACE.fill(COLOR_BG)
@@ -119,7 +141,7 @@ while not game_over:
             pygame.quit()
             sys.exit()
         ## keyboard mode
-        elif event.type == KEYDOWN:
+        elif event.type == KEYDOWN and not RASPI:
             if event.key == K_a:
                 p1.left = True
                 p1.right = False
@@ -136,6 +158,25 @@ while not game_over:
                 p2.right = True
                 p2.left = False
                 p2.turn()
+                
+    ## raspberry mode
+    if RASPI:
+        if not GPIO.input(P1_LEFT_PIN) and pygame.time.get_ticks() - p1_left_ms > BTN_DELAY:
+            p1_left_ms = pygame.time.get_ticks()
+            p1.left = True
+            p1.turn()
+        if not GPIO.input(P1_RIGHT_PIN) and pygame.time.get_ticks() - p1_right_ms > BTN_DELAY:
+            p1_right_ms = pygame.time.get_ticks()
+            p1.right = True
+            p1.turn()
+        if not GPIO.input(P2_LEFT_PIN) and pygame.time.get_ticks() - p2_left_ms > BTN_DELAY:
+            p2_left_ms = pygame.time.get_ticks()
+            p2.left = True
+            p2.turn()
+        if not GPIO.input(P2_RIGHT_PIN) and pygame.time.get_ticks() - p2_right_ms > BTN_DELAY:
+            p2_right_ms = pygame.time.get_ticks()
+            p2.right = True
+            p2.turn()
 
     p1.left = False
     p1.right = False
@@ -248,5 +289,8 @@ while not game_over:
     ## update
     CLOCK.tick(TPS)
     pygame.display.update()
+    
+if RASPI:
+  GPIO.cleanup()
     
 pygame.time.wait(4000)
