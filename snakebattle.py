@@ -42,6 +42,48 @@ LEFT = (1, 0)
 ## game over
 game_over = False
 
+## players
+class Player:
+    x = None
+    y = None
+    left = False
+    right = False
+    direction = None
+    length = 2
+    tail = []
+
+    def turn(self):
+        if self.right:
+            if self.direction == UP:
+                self.direction = LEFT
+            elif self.direction == RIGHT:
+                self.direction = UP
+            elif self.direction == DOWN:
+                self.direction = RIGHT
+            elif self.direction == LEFT:
+                self.direction = DOWN
+        elif self.left:
+            if self.direction == UP:
+                self.direction = RIGHT
+            elif self.direction == RIGHT:
+                self.direction = DOWN
+            elif self.direction == DOWN:
+                self.direction = LEFT
+            elif self.direction == LEFT:
+                self.direction = UP
+
+p1 = Player()
+p1.x = 4
+p1.y = TILES_Y / 2 + 5
+p1.direction = UP
+p1.tail = [(p1.x, p1.y - 1), (p1.x, p1.y - 2)]
+
+p2 = Player()
+p2.x = TILES_X - 5
+p2.y = TILES_Y / 2 + 5
+p2.direction = UP
+p2.tail = [(p2.x, p2.y - 1), (p2.x, p2.y - 2)]
+
 ## main loop
 while not game_over:
     ## event queue
