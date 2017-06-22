@@ -45,6 +45,23 @@ LEFT = (1, 0)
 ## game over
 game_over = False
 
+## print game over message
+def game_over_msg(winner):
+    if winner == 0:
+        if p1.length == p2.length:
+            draw = FONT_SC.render("Draw!", 1, COLOR_FG)
+            DISPLAY_SURFACE.blit(draw, (DISPLAY_SURFACE.get_width() / 2 - draw.get_rect().width / 2, 200))
+        elif p1.length > p2.length:
+            game_over_msg(1)
+        else:
+            game_over_msg(2)
+    elif winner == 1:
+        p1_wins = FONT_SC.render("Player 1 wins!", 1, COLOR_P1)
+        DISPLAY_SURFACE.blit(p1_wins, (DISPLAY_SURFACE.get_width() / 2 - p1_wins.get_rect().width / 2, 200))
+    elif winner == 2:
+        p2_wins = FONT_SC.render("Player 2 wins!", 1, COLOR_P2)
+        DISPLAY_SURFACE.blit(p2_wins, (DISPLAY_SURFACE.get_width() / 2 - p2_wins.get_rect().width / 2, 200))
+
 ## food
 food_drawn = False
 food_x = None
@@ -184,6 +201,32 @@ while not game_over:
     DISPLAY_SURFACE.blit(p1_length_label, (DISPLAY_SURFACE.get_width() / 2 - p1_length_label.get_rect().width - TILE_SIZE, 20))
     DISPLAY_SURFACE.blit(sep_length_label, (DISPLAY_SURFACE.get_width() / 2, 20))
     DISPLAY_SURFACE.blit(p2_length_label, (DISPLAY_SURFACE.get_width() / 2 + sep_length_label.get_rect().width + TILE_SIZE, 20))
+
+    ## check game over (edges)
+    if (p1.x >= TILES_X or p1.y >= TILES_Y or p1.x < 0 or p1.y < 0) and (p2.x >= TILES_X or p2.y >= TILES_Y or p2.x < 0 or p2.y < 0):
+        game_over_msg(0)
+        game_over = True
+    else:
+        if p1.x >= TILES_X or p1.y >= TILES_Y or p1.x < 0 or p1.y < 0:
+            game_over_msg(2)
+            game_over = True
+        elif p2.x >= TILES_X or p2.y >= TILES_Y or p2.x < 0 or p2.y < 0:
+            game_over_msg(1)
+            game_over = True
+
+    ## check game over (touch)
+    if p1.x == p2.x and p1.y == p2.y:
+        game_over_msg(0)
+        game_over = True
+    else:
+        for i in p1.tail:
+            if i[0] == p2.x and i[1] == p2.y:
+                game_over_msg(1)
+                game_over = True
+        for i in p2.tail:
+            if i[0] == p1.x and i[1] == p1.y:
+                game_over_msg(2)
+                game_over = True
 
     ## debugging
     if DEBUG:
