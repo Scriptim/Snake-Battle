@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, sys, random
 from pygame.locals import *
 
 ## window dimensions
@@ -41,6 +41,11 @@ LEFT = (1, 0)
 
 ## game over
 game_over = False
+
+## food
+food_drawn = False
+food_x = None
+food_y = None
 
 ## players
 class Player:
@@ -148,6 +153,27 @@ while not game_over:
         else:
             p2.tail[i] = (p2.tail[i - 1][0], p2.tail[i - 1][1])
 
+    ## food
+    if food_drawn:
+        pygame.draw.rect(DISPLAY_SURFACE, COLOR_FD, get_dimension(food_x, food_y, 1, 1))
+        if p1.x == food_x and p1.y == food_y:
+            p1.tail.insert(0, (p1.x + p1.direction[0], p1.y + p1.direction[1]))
+            p1.x = food_x + p1.direction[0]
+            p1.y = food_y + p1.direction[1]
+            p1.length += 1
+            food_drawn = False
+        elif p2.x == food_x and p2.y == food_y:
+            p2.tail.insert(0, (p2.x + p2.direction[0], p2.y + p2.direction[1]))
+            p2.x = food_x + p2.direction[0]
+            p2.y = food_y + p2.direction[1]
+            p2.length += 1
+            food_drawn = False
+    else:
+        if random.random() > 0.95:
+            food_x = random.choice(range(1, TILES_X - 1))
+            food_y = random.choice(range(1, TILES_Y - 1))
+            food_drawn = True
+
     ## score
     p1_length_label = FONT_SC.render(str(p1.length), 1, COLOR_P1)
     sep_length_label = FONT_SC.render(":", 1, COLOR_FG)
@@ -168,6 +194,10 @@ while not game_over:
 
         DISPLAY_SURFACE.blit(FONT_DB.render("MS: " + str(pygame.time.get_ticks()), 1, COLOR_DB), (340, DISPLAY_SURFACE.get_height() - 80))
         DISPLAY_SURFACE.blit(FONT_DB.render("FPS: " + str(round(CLOCK.get_fps(), 2)), 1, COLOR_DB), (340, DISPLAY_SURFACE.get_height() - 60))
+        if food_drawn:
+            DISPLAY_SURFACE.blit(FONT_DB.render("Food: (" + str(food_x) + ", " + str(food_y) + ")", 1, COLOR_DB), (340, DISPLAY_SURFACE.get_height() - 40))
+        else:
+            DISPLAY_SURFACE.blit(FONT_DB.render("Food: -", 1, COLOR_DB), (340, DISPLAY_SURFACE.get_height() - 40))
 
     ## update
     CLOCK.tick(TPS)
