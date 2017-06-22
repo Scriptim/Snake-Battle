@@ -117,6 +117,13 @@ while not game_over:
     p2.left = False
     p2.right = False
 
+    ## clear
+    DISPLAY_SURFACE.fill(COLOR_BG)
+
+    ## draw head
+    pygame.draw.rect(DISPLAY_SURFACE, COLOR_P1, get_dimension(p1.x, p1.y, 1, 1))
+    pygame.draw.rect(DISPLAY_SURFACE, COLOR_P2, get_dimension(p2.x, p2.y, 1, 1))
+
     ## move head
     p1.x += p1.direction[0]
     p1.y += p1.direction[1]
