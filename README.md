@@ -6,8 +6,8 @@ Play **Snake** with two players
 
 ## Required Python Packages
 
-`pygame`
-`RPi` (only when using on Raspberry Pi)
+- `pygame`
+- `RPi` (only when using on Raspberry Pi)
 
 ## Setup Font
 
@@ -29,6 +29,18 @@ Open a Terminal and navigate to this folder, then run
 	python2.7 snakebattle.py 
 	
 The game is tested with **Python v2.7**, feel free to use another compatible version
+
+## Play Game
+
+- Player 1:
+    - Turn left with `A`
+    - Turn right with `D`
+- Player 2:
+    - Turn left with `LEFT ARROW`
+    - Turn right with `RIGHT ARROW`
+- Collect Food to grow
+- You lose, when you touch your opponent or the window borders
+- When both players "lose" at once, the longer snake will win
 
 ## Arguments
 
