@@ -4,6 +4,19 @@ Play **Snake** with two players
 
 **THIS GAME IS ALSO PLAYABLE ON A RASPBERRY PI USING GPIO INPUTS!**
 
+## Python Installation
+
+### Windows
+
+- Download the latest Python 2 release from [here](https://www.python.org/downloads/windows/)
+- Run the installer (make sure to include *pip*)
+- Open `cmd.exe` as administrator and install the required packages by running `pip install <package>` or `python -m pip install <package>`
+
+### Linux
+
+- Install Python 2 (`python2.7`) using your package manager
+- Open a terminal and install the required packages by running `pip install <package>` as root
+
 ## Required Python Packages
 
 - `pygame`
@@ -21,7 +34,9 @@ I recommend using [VT323 by Peter Hull](https://fonts.google.com/specimen/VT323 
    
     FONT_DB = pygame.font.Font("VT232.ttf", 20) # debug font
     FONT_SC = pygame.font.Font("VT232.ttf", TILE_SIZE * 5) # score
-    
+
+**Note: You should use an absolute path if you do not run the game from inside the directory**
+
 ## Start Game
 
 Open a Terminal and navigate to this folder, then run
