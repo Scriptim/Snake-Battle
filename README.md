@@ -43,7 +43,7 @@ Open a Terminal and navigate to this folder, then run
 	
 	python2.7 snakebattle.py 
 	
-The game is tested with **Python v2.7**, feel free to use another compatible version
+The game is tested with **Python v2.7**, feel free to use any other compatible version
 
 ## Play Game
 
