@@ -7,7 +7,7 @@ arg_parser.add_argument('-r', '--raspi', dest='raspi', action='store_true', help
 arg_parser.add_argument('-s', '--tilesize', dest='tilesize', metavar='PX', help='the size of a tile', type=int, default=12)
 arg_parser.add_argument('-t', '--tiles', dest='tiles', nargs=2, metavar=('X', 'Y'), help='the number of tiles', type=int, default=[70, 50])
 arg_parser.add_argument('-d', '--debug', dest='debug', action='store_true', help='show debug information on the screen')
-arg_parser.add_argument('-f', '--fps', dest='fps', nargs=1, metavar='TPS', help='framerate in ticks per second', type=int, default=12)
+arg_parser.add_argument('-f', '--fps', dest='fps', metavar='TPS', help='framerate in ticks per second', type=int, default=12)
 arg_parser.add_argument('-b', '--delay', dest='delay', metavar='MS', help='button delay (raspi mode)', type=int, default=100)
 args = arg_parser.parse_args()
 print(args)
