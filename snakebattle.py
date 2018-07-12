@@ -56,7 +56,7 @@ DEBUG = args.debug # debugging
 ## tiles to pixels
 def get_dimension(x, y, width = 0, height = 0):
     return (x * TILE_SIZE, y * TILE_SIZE, width * TILE_SIZE, height * TILE_SIZE)
-  
+
 ## init
 pygame.init()
 pygame.display.set_caption('Snake Battle by Scriptim' + (' (Raspberry Mode)' if args.raspi else ''))
@@ -75,10 +75,10 @@ DOWN = (0, 1)
 LEFT = (1, 0)
 
 ## game over
-game_over = False
+winner = None
 
 ## print game over message
-def game_over_msg(winner):
+def game_over_msg():
     if winner == 0:
         if p1.length == p2.length:
             draw = FONT_SC.render("Draw!", 1, COLOR_FG)
@@ -142,7 +142,7 @@ p2.direction = UP
 p2.tail = [(p2.x, p2.y - 1), (p2.x, p2.y - 2)]
 
 ## main loop
-while not game_over:
+while winner == None:
     ## event queue
     for event in pygame.event.get():
         ## QUIT event
@@ -168,7 +168,7 @@ while not game_over:
                 p2.right = True
                 p2.left = False
                 p2.turn()
-                
+
     ## raspberry mode
     if args.raspi:
         if not GPIO.input(P1_LEFT_PIN) and pygame.time.get_ticks() - p1_left_ms > BTN_DELAY:
@@ -205,7 +205,7 @@ while not game_over:
     p1.y += p1.direction[1]
     p2.x += p2.direction[0]
     p2.y += p2.direction[1]
-    
+
     ## draw tail
     for i in p1.tail:
         pygame.draw.rect(DISPLAY_SURFACE, COLOR_P1, get_dimension(i[0], i[1], 1, 1))
@@ -255,29 +255,38 @@ while not game_over:
 
     ## check game over (edges)
     if (p1.x >= TILES_X or p1.y >= TILES_Y or p1.x < 0 or p1.y < 0) and (p2.x >= TILES_X or p2.y >= TILES_Y or p2.x < 0 or p2.y < 0):
-        game_over_msg(0)
-        game_over = True
+        winner = 0
     else:
         if p1.x >= TILES_X or p1.y >= TILES_Y or p1.x < 0 or p1.y < 0:
-            game_over_msg(2)
-            game_over = True
+            if winner == None:
+                winner = 2
+            else:
+                winner = 0
         elif p2.x >= TILES_X or p2.y >= TILES_Y or p2.x < 0 or p2.y < 0:
-            game_over_msg(1)
-            game_over = True
+            if winner == None:
+                winner = 1
+            else:
+                winner = 0
 
     ## check game over (touch)
     if p1.x == p2.x and p1.y == p2.y:
-        game_over_msg(0)
-        game_over = True
+        winner = 0
     else:
         for i in p1.tail:
             if i[0] == p2.x and i[1] == p2.y:
-                game_over_msg(1)
-                game_over = True
+                if winner == None:
+                    winner = 1
+                else:
+                    winner = 0
         for i in p2.tail:
             if i[0] == p1.x and i[1] == p1.y:
-                game_over_msg(2)
-                game_over = True
+                if winner == None:
+                    winner = 2
+                else:
+                    winner = 0
+
+    if winner != None:
+        game_over_msg()
 
     ## debugging
     if DEBUG:
@@ -299,8 +308,8 @@ while not game_over:
     ## update
     CLOCK.tick(TPS)
     pygame.display.update()
-    
+
 if args.raspi:
   GPIO.cleanup()
-    
+
 pygame.time.wait(4000)
